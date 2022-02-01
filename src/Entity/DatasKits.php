@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DatasKitsRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -14,6 +17,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  itemOperations={"get","put","delete"},
  *  normalizationContext={"groups"={"kit:read"}},
  *  denormalizationContext={"groups"={"kit:write"}}
+ * )
+ * @ApiFilter(
+ *  SearchFilter::class,
+ *      properties={"idMM" : "exact","status" : "exact"}
  * )
  * @ORM\Entity(repositoryClass=DatasKitsRepository::class)
  * @UniqueEntity("idMM")
@@ -102,7 +109,7 @@ class DatasKits
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("kit:read","kit:write"})
+     * @Groups({"kit:read","kit:write"})
      */
     private $status;
 
