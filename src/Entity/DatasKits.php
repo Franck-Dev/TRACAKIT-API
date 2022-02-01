@@ -5,10 +5,16 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DatasKitsRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *  collectionOperations={"get","post"},
+ *  itemOperations={"get","put","delete"},
+ *  normalizationContext={"groups"={"kit:read"}},
+ *  denormalizationContext={"groups"={"kit:write"}}
+ * )
  * @ORM\Entity(repositoryClass=DatasKitsRepository::class)
  * @UniqueEntity("idMM")
  */
@@ -18,71 +24,85 @@ class DatasKits
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("kit:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=10, unique=true)
+     * @Groups({"kit:read","kit:write"})
      */
     private $idMM;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"kit:read","kit:write"})
      */
     private $ReferenceSAP;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"kit:read","kit:write"})
      */
     private $DesignationSAP;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"kit:read","kit:write"})
      */
     private $TackLife;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"kit:read","kit:write"})
      */
     private $TimeOut;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"kit:read","kit:write"})
      */
     private $LotSAP;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"kit:read","kit:write"})
      */
     private $PeremptionMoins18;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"kit:read","kit:write"})
      */
     private $ADrapAv;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"kit:read","kit:write"})
      */
     private $ACuirAv;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"kit:read","kit:write"})
      */
     private $Decongel;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups("kit:read",)
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Groups("kit:read")
      */
     private $updateAt;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"kit:read","kit:write"})
      */
     private $status;
 
