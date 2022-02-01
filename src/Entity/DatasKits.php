@@ -102,7 +102,7 @@ class DatasKits
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"kit:read","kit:write"})
+     * @Groups("kit:read","kit:write"})
      */
     private $status;
 
