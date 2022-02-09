@@ -24,48 +24,48 @@ class Molding
     /**
      * @ORM\ManyToMany(targetEntity=dataskits::class, inversedBy="moldings")
      */
-    private $Kits;
+    private $kits;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $MoldingDay;
+    private $moldingDay;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $ACuireAv;
+    private $aCuireAv;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private $ADraperAv;
+    private $aDraperAv;
 
     /**
      * @ORM\ManyToOne(targetEntity=DatasKits::class, inversedBy="moldings")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $MatPolym;
+    private $matPolym;
 
     /**
      * @ORM\ManyToOne(targetEntity=DatasKits::class, inversedBy="moldings")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $MatDrap;
+    private $matDrap;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $CreatedAt;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private $UpdatedAt;
+    private $updatedAt;
 
     public function __construct()
     {
-        $this->Kits = new ArrayCollection();
+        $this->kits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,15 +76,15 @@ class Molding
     /**
      * @return Collection|dataskits[]
      */
-    public function getKits(): Collection
+    public function getkits(): Collection
     {
-        return $this->Kits;
+        return $this->kits;
     }
 
     public function addKit(dataskits $kit): self
     {
-        if (!$this->Kits->contains($kit)) {
-            $this->Kits[] = $kit;
+        if (!$this->kits->contains($kit)) {
+            $this->kits[] = $kit;
         }
 
         return $this;
@@ -92,91 +92,91 @@ class Molding
 
     public function removeKit(dataskits $kit): self
     {
-        $this->Kits->removeElement($kit);
+        $this->kits->removeElement($kit);
 
         return $this;
     }
 
-    public function getMoldingDay(): ?\DateTimeImmutable
+    public function getmoldingDay(): ?\DateTimeImmutable
     {
-        return $this->MoldingDay;
+        return $this->moldingDay;
     }
 
-    public function setMoldingDay(\DateTimeImmutable $MoldingDay): self
+    public function setmoldingDay(\DateTimeImmutable $moldingDay): self
     {
-        $this->MoldingDay = $MoldingDay;
+        $this->moldingDay = $moldingDay;
 
         return $this;
     }
 
-    public function getACuireAv(): ?\DateTimeImmutable
+    public function getaCuireAv(): ?\DateTimeImmutable
     {
-        return $this->ACuireAv;
+        return $this->aCuireAv;
     }
 
-    public function setACuireAv(\DateTimeImmutable $ACuireAv): self
+    public function setaCuireAv(\DateTimeImmutable $aCuireAv): self
     {
-        $this->ACuireAv = $ACuireAv;
+        $this->aCuireAv = $aCuireAv;
 
         return $this;
     }
 
-    public function getADraperAv(): ?\DateTimeImmutable
+    public function getaDraperAv(): ?\DateTimeImmutable
     {
-        return $this->ADraperAv;
+        return $this->aDraperAv;
     }
 
-    public function setADraperAv(?\DateTimeImmutable $ADraperAv): self
+    public function setaDraperAv(?\DateTimeImmutable $aDraperAv): self
     {
-        $this->ADraperAv = $ADraperAv;
+        $this->raDraperAv = $aDraperAv;
 
         return $this;
     }
 
-    public function getMatPolym(): ?DatasKits
+    public function getmatPolym(): ?DatasKits
     {
-        return $this->MatPolym;
+        return $this->matPolym;
     }
 
-    public function setMatPolym(?DatasKits $MatPolym): self
+    public function setmatPolym(?DatasKits $matPolym): self
     {
-        $this->MatPolym = $MatPolym;
+        $this->matPolym = $matPolym;
 
         return $this;
     }
 
-    public function getMatDrap(): ?DatasKits
+    public function getmatDrap(): ?DatasKits
     {
-        return $this->MatDrap;
+        return $this->matDrap;
     }
 
-    public function setMatDrap(?DatasKits $MatDrap): self
+    public function setmatDrap(?DatasKits $matDrap): self
     {
-        $this->MatDrap = $MatDrap;
+        $this->matDrap = $matDrap;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getcreatedAt(): ?\DateTimeImmutable
     {
-        return $this->CreatedAt;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
+    public function setcreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->CreatedAt = $CreatedAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getupdatedAt(): ?\DateTimeImmutable
     {
-        return $this->UpdatedAt;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $UpdatedAt): self
+    public function setupdatedAt(?\DateTimeImmutable $updatedAt): self
     {
-        $this->UpdatedAt = $UpdatedAt;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
