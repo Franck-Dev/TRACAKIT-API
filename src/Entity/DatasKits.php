@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DatasKitsRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -112,6 +114,16 @@ class DatasKits
      * @Groups({"kit:read","kit:write"})
      */
     private $status;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Molding::class, mappedBy="Kits")
+     */
+    private $moldings;
+
+    public function __construct()
+    {
+        $this->moldings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -270,6 +282,33 @@ class DatasKits
     public function setStatus(bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Molding[]
+     */
+    public function getMoldings(): Collection
+    {
+        return $this->moldings;
+    }
+
+    public function addMolding(Molding $molding): self
+    {
+        if (!$this->moldings->contains($molding)) {
+            $this->moldings[] = $molding;
+            $molding->addKit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMolding(Molding $molding): self
+    {
+        if ($this->moldings->removeElement($molding)) {
+            $molding->removeKit($this);
+        }
 
         return $this;
     }
