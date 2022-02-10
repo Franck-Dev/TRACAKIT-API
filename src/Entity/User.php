@@ -2,12 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\UserRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
+ * * @ApiResource(
+ *     normalizationContext={"groups"={"user:read"}},
+ *     denormalizationContext={"groups"={"user:write"}},
+ * )
+ * @UniqueEntity(fields={"username"})
+ * @UniqueEntity(fields={"matricule"})
+ * @UniqueEntity(fields={"mail"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -20,37 +33,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @Groups({"user:read"})
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
 
     /**
+     * @Groups({"user:write"})
      * @ORM\Column(type="json")
      */
     private $roles = [];
 
     /**
+     * @Groups({"user:write"})
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
+     * @Assert\Email
+     * @Groups({"user:read"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $mail;
 
     /**
+     * @Assert\NotBlank()
+     * @Groups({"user:read", "user:write"})
      * @ORM\Column(type="integer", unique=true)
      */
     private $matricule;
 
     /**
+     * @Assert\NotBlank()
+     * @Groups({"user:write"})
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
 
     /**
+     * @Assert\NotBlank()
+     * @Groups({"user:write"})
      * @ORM\Column(type="string", length=255)
      */
     private $prenom;
@@ -66,6 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $updatedAt;
 
     /**
+     * @Groups({"user:read"})
      * @ORM\Column(type="boolean")
      */
     private $isActive;
