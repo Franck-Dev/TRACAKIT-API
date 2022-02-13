@@ -26,6 +26,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
+     * @Groups({"user:read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -96,6 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isActive;
 
     /**
+     * @Groups({"user:read"})
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $lastCon;
@@ -127,7 +129,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string) $this->matricule;
     }
 
     /**

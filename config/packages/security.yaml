@@ -21,6 +21,12 @@ security:
             lazy: true
             provider: app_user_provider
 
+            json_login:
+                check_path: api_login
+                username_path: matricule
+                password_path: password
+            logout:
+                path: api_logout
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -30,6 +36,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        #- { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
