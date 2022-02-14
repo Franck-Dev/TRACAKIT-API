@@ -4,11 +4,11 @@
 
 namespace App\DataPersister;
 
-use App\Entity\DatasKits;
+use App\Entity\Molding;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 
-class KitDataPersister implements ContextAwareDataPersisterInterface
+class MoldingDataPersister implements ContextAwareDataPersisterInterface
 {
     /**
      * @var EntityManagerInterface
@@ -28,18 +28,17 @@ class KitDataPersister implements ContextAwareDataPersisterInterface
     
     public function supports($data, array $context = []): bool
     {
-        return $data instanceof DatasKits;
+        return $data instanceof Molding;
     }
 
     public function persist($data, array $context = [])
     {
         // Si création on renvoie la date de création, sinon la date d emodification
-        if (!$data->getCreatedAt()) {
-            $data->setUpdateAt(new \DateTimeImmutable());
+        if (!$data->getcreatedAt()) {
+            $data->setcreatedAt(new \DateTimeImmutable());
         } else {
-            $data->setCreatedAt(new \DateTimeImmutable());
+            $data->setupdatedAt(new \DateTimeImmutable());
         }
-        
         $this->_entityManager->persist($data);
         $this->_entityManager->flush();
     }

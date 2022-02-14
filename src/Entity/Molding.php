@@ -2,19 +2,24 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\MoldingRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MoldingRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      normalizationContext={"groups"={"user:read"}},
+ *      denormalizationContext={"groups"={"user:write"}},
+ * )
  * @ORM\Entity(repositoryClass=MoldingRepository::class)
  */
 class Molding
 {
     /**
+     * @Groups({"user:read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,32 +27,38 @@ class Molding
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=dataskits::class, inversedBy="moldings")
+     * @Groups({"user:read", "user:write"})
+     * @ORM\ManyToMany(targetEntity=DatasKits::class, inversedBy="moldings")
      */
     private $kits;
 
     /**
+     * @Groups({"user:read", "user:write"})
      * @ORM\Column(type="datetime_immutable")
      */
     private $moldingDay;
 
     /**
+     * @Groups({"user:read", "user:write"})
      * @ORM\Column(type="datetime_immutable")
      */
     private $aCuireAv;
 
     /**
+     * @Groups({"user:read", "user:write"})
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $aDraperAv;
 
     /**
+     * @Groups({"user:read", "user:write"})
      * @ORM\ManyToOne(targetEntity=DatasKits::class, inversedBy="moldings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $matPolym;
 
     /**
+     * @Groups({"user:read", "user:write"})
      * @ORM\ManyToOne(targetEntity=DatasKits::class, inversedBy="moldings")
      * @ORM\JoinColumn(nullable=false)
      */
