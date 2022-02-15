@@ -17,8 +17,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ApiResource(
  *  collectionOperations={"get","post"},
  *  itemOperations={"get","put","delete"},
- *  normalizationContext={"groups"={"kit:read"}},
- *  denormalizationContext={"groups"={"kit:write"}}
+ *  normalizationContext={"groups"={"kit:read", "kit:edit"}},
+ *  denormalizationContext={"groups"={"kit:write"}},
+ *  order={"id" ="DESC"}
  * )
  * @ApiFilter(
  *  SearchFilter::class,
@@ -39,7 +40,7 @@ class DatasKits
 
     /**
      * @ORM\Column(type="string", length=10, unique=true)
-     * @Groups({"kit:read","kit:write"})
+     * @Groups({"kit:read","kit:write", "kit:edit"})
      */
     private $idMM;
 

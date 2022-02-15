@@ -2,17 +2,33 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\MoldingToolRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MoldingToolRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      normalizationContext={"groups"={"OT:read"}},
+ *      denormalizationContext={"groups"={"OT:write"}},
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class,
+ *          properties={"sapToolNumber" : "exact","identification" : "exact"}
+ * )
  * @ORM\Entity(repositoryClass=MoldingToolRepository::class)
+ * @UniqueEntity("sapToolNumber")
+ * @UniqueEntity("identification")
  */
 class MoldingTool
 {
     /**
+     * @Groups({"OT:read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,19 +36,32 @@ class MoldingTool
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @Groups({"OT:read", "OT:write"})
+     * @ORM\Column(type="integer", unique=true)
      */
     private $sapToolNumber;
 
     /**
+     * @Groups({"OT:read", "OT:write"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $designation;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"OT:read", "OT:write"})
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      */
     private $identification;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Molding::class, mappedBy="outillage")
+     */
+    private $moldings;
+
+    public function __construct()
+    {
+        $this->moldings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -71,6 +100,36 @@ class MoldingTool
     public function setidentification(?string $identification): self
     {
         $this->identification = $identification;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Molding[]
+     */
+    public function getMoldings(): Collection
+    {
+        return $this->moldings;
+    }
+
+    public function addMolding(Molding $molding): self
+    {
+        if (!$this->moldings->contains($molding)) {
+            $this->moldings[] = $molding;
+            $molding->setOutillage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMolding(Molding $molding): self
+    {
+        if ($this->moldings->removeElement($molding)) {
+            // set the owning side to null (unless already changed)
+            if ($molding->getOutillage() === $this) {
+                $molding->setOutillage(null);
+            }
+        }
 
         return $this;
     }

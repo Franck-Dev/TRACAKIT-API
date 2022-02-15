@@ -8,18 +8,20 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *      normalizationContext={"groups"={"user:read"}},
- *      denormalizationContext={"groups"={"user:write"}},
+ *      normalizationContext={"groups"={"layer:read", "OT:read", "kit:read"}},
+ *      denormalizationContext={"groups"={"layer:write"}},
+ *      order={"id" ="DESC"}
  * )
  * @ORM\Entity(repositoryClass=MoldingRepository::class)
  */
 class Molding
 {
     /**
-     * @Groups({"user:read"})
+     * @Groups({"layer:read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -27,38 +29,41 @@ class Molding
     private $id;
 
     /**
-     * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank()
+     * @Groups({"layer:read", "layer:write", "kit:read"})
      * @ORM\ManyToMany(targetEntity=DatasKits::class, inversedBy="moldings")
      */
     private $kits;
 
     /**
-     * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank()
+     * @Groups({"layer:read", "layer:write"})
      * @ORM\Column(type="datetime_immutable")
      */
     private $moldingDay;
 
     /**
-     * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank()
+     * @Groups({"layer:read", "layer:write"})
      * @ORM\Column(type="datetime_immutable")
      */
     private $aCuireAv;
 
     /**
-     * @Groups({"user:read", "user:write"})
+     * @Groups({"layer:read", "layer:write"})
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $aDraperAv;
 
     /**
-     * @Groups({"user:read", "user:write"})
+     * @Groups({"layer:read", "layer:write", "kit:edit"})
      * @ORM\ManyToOne(targetEntity=DatasKits::class, inversedBy="moldings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $matPolym;
 
     /**
-     * @Groups({"user:read", "user:write"})
+     * @Groups({"layer:read", "layer:write",  "kit:edit"})
      * @ORM\ManyToOne(targetEntity=DatasKits::class, inversedBy="moldings")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -73,6 +78,26 @@ class Molding
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @Assert\NotBlank()
+     * @Groups({"layer:read", "layer:write", "OT:read"})
+     * @ORM\ManyToOne(targetEntity=MoldingTool::class, inversedBy="moldings")
+     */
+    private $outillage;
+
+    /**
+     * @Assert\NotBlank()
+     * @Groups({"layer:read"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="moldings")
+     */
+    private $createdBy;
+
+    /**
+     * @Groups({"layer:read"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="moldings")
+     */
+    private $modifiedBy;
 
     public function __construct()
     {
@@ -188,6 +213,42 @@ class Molding
     public function setupdatedAt(?\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getOutillage(): ?MoldingTool
+    {
+        return $this->outillage;
+    }
+
+    public function setOutillage(?MoldingTool $outillage): self
+    {
+        $this->outillage = $outillage;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?user
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?user $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getModifiedBy(): ?User
+    {
+        return $this->modifiedBy;
+    }
+
+    public function setModifiedBy(?User $modifiedBy): self
+    {
+        $this->modifiedBy = $modifiedBy;
 
         return $this;
     }

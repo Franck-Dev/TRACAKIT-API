@@ -6,6 +6,7 @@ namespace App\DataPersister;
 
 use App\Entity\Molding;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Security;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 
 class MoldingDataPersister implements ContextAwareDataPersisterInterface
@@ -15,11 +16,19 @@ class MoldingDataPersister implements ContextAwareDataPersisterInterface
      */
     private $_entityManager;
 
+    
+    /**
+     *
+     * @var Security
+     */
+    private $_security;
+
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager, Security $security
     )
     {
         $this->_entityManager = $entityManager;
+        $this->security = $security;
     }
 
     /**
@@ -33,11 +42,13 @@ class MoldingDataPersister implements ContextAwareDataPersisterInterface
 
     public function persist($data, array $context = [])
     {
-        // Si création on renvoie la date de création, sinon la date d emodification
+        // Si création on renvoie les données de création, sinon celles de modification
         if (!$data->getcreatedAt()) {
             $data->setcreatedAt(new \DateTimeImmutable());
+            $data->setcreatedBy($this->_security->getUser());
         } else {
             $data->setupdatedAt(new \DateTimeImmutable());
+            $data->setmodifiedBy($this->_security->getUser());
         }
         $this->_entityManager->persist($data);
         $this->_entityManager->flush();

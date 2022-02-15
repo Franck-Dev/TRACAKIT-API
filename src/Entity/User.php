@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\UserRepository;
@@ -101,6 +103,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $lastCon;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Molding::class, mappedBy="createdBy")
+     */
+    private $moldings;
+
+    public function __construct()
+    {
+        $this->moldings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -278,6 +290,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastCon(?\DateTimeImmutable $lastCon): self
     {
         $this->lastCon = $lastCon;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Molding[]
+     */
+    public function getMoldings(): Collection
+    {
+        return $this->moldings;
+    }
+
+    public function addMolding(Molding $molding): self
+    {
+        if (!$this->moldings->contains($molding)) {
+            $this->moldings[] = $molding;
+            $molding->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMolding(Molding $molding): self
+    {
+        if ($this->moldings->removeElement($molding)) {
+            // set the owning side to null (unless already changed)
+            if ($molding->getCreatedBy() === $this) {
+                $molding->setCreatedBy(null);
+            }
+        }
 
         return $this;
     }
