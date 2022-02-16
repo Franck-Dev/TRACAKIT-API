@@ -14,9 +14,20 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Controller\SecurityController;
 
 /**
  * * @ApiResource(
+ *      attributes={"pagination_enabled"=false},
+ *      collectionOperations={
+*              "get","post",
+*              "login"={
+*                  "method"="POST",
+*                  "path"="/login",
+*                  "controller"="SecurityController::class",
+*                  "denormalization_context"={"groups"={"user:login"}}
+*              }
+ *       },
  *     normalizationContext={"groups"={"user:read"}},
  *     denormalizationContext={"groups"={"user:write"}},
  * )
@@ -48,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     /**
-     * @Groups({"user:write"})
+     * @Groups({"user:write","user:login"})
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
@@ -63,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\NotBlank()
-     * @Groups({"user:read", "user:write"})
+     * @Groups({"user:read", "user:write","user:login"})
      * @ORM\Column(type="integer", unique=true)
      */
     private $matricule;

@@ -14,6 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *      normalizationContext={"groups"={"layer:read", "OT:read", "kit:read"}},
  *      denormalizationContext={"groups"={"layer:write"}},
+ *      collectionOperations={
+ *              "get",
+ *              "post"={"security"="is_granted('ROLE_USER')"}
+ *      },
  *      order={"id" ="DESC"}
  * )
  * @ORM\Entity(repositoryClass=MoldingRepository::class)
