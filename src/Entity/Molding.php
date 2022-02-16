@@ -74,11 +74,13 @@ class Molding
     private $matDrap;
 
     /**
+     * @Groups({"layer:read"})
      * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
 
     /**
+     * @Groups({"layer:read"})
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $updatedAt;
@@ -91,7 +93,6 @@ class Molding
     private $outillage;
 
     /**
-     * @Assert\NotBlank()
      * @Groups({"layer:read"})
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="moldings")
      */

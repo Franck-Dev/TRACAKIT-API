@@ -41,7 +41,6 @@ class MoldingDataPersister implements ContextAwareDataPersisterInterface
 
     public function persist($data, array $context = [])
     {
-        dd($this->_security->getUser());
         // Si création on renvoie les données de création, sinon celles de modification
         if (!$data->getcreatedAt()) {
             $data->setcreatedAt(new \DateTimeImmutable());
