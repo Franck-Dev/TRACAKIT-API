@@ -2,19 +2,22 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Poste;
+use App\Entity\Service;
+use App\Entity\ProgrammeAvion;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\UserRepository;
+use App\Controller\SecurityController;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use App\Controller\SecurityController;
 
 /**
  * * @ApiResource(
@@ -26,7 +29,12 @@ use App\Controller\SecurityController;
 *                  "path"="/login",
 *                  "controller"="SecurityController::class",
 *                  "denormalization_context"={"groups"={"user:login"}}
-*              }
+*              },
+*               "logout"={
+*                   "method"="GET",
+*                   "path"="/logout",
+*                   "controller"="SecurityController::class",
+*               }
  *       },
  * itemOperations={
  *              "get",

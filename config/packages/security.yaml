@@ -27,6 +27,7 @@ security:
                 password_path: password
             logout:
                 path: api_logout
+                target: /api
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -54,8 +55,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
+        #- { path: ^/admin, roles: ROLE_ADMIN }
+        #- { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:
