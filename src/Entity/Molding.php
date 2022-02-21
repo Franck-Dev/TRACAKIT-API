@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "get",
  *              "post"={"security"="is_granted('ROLE_USER')"}
  *      },
+ *      itemOperations={"get","put","patch","delete"},
  *      order={"id" ="DESC"}
  * )
  * @ORM\Entity(repositoryClass=MoldingRepository::class)
@@ -169,7 +170,7 @@ class Molding
 
     public function setaDraperAv(?\DateTimeImmutable $aDraperAv): self
     {
-        $this->raDraperAv = $aDraperAv;
+        $this->aDraperAv = $aDraperAv;
 
         return $this;
     }

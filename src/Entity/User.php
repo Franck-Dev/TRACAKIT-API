@@ -28,6 +28,12 @@ use App\Controller\SecurityController;
 *                  "denormalization_context"={"groups"={"user:login"}}
 *              }
  *       },
+ * itemOperations={
+ *              "get",
+ *              "put"={"security"="is_granted('ROLE_ADMIN')"},
+ *              "patch"={"security"="is_granted('ROLE_USER')"},
+ *              "delete"={"security"="is_granted('ROLE_ADMIN')"},
+ * },
  *     normalizationContext={"groups"={"user:read"}},
  *     denormalizationContext={"groups"={"user:write"}},
  * )
@@ -47,13 +53,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @Groups({"user:read"})
+     * @Groups({"user:read","layer:read"})
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
 
     /**
-     * @Groups({"user:write"})
+     * @Groups({"user:read"})
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -74,7 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\NotBlank()
-     * @Groups({"user:read", "user:write","user:login"})
+     * @Groups({"user:read", "user:write","user:login","layer:read"})
      * @ORM\Column(type="integer", unique=true)
      */
     private $matricule;
@@ -120,9 +126,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $moldings;
 
+    /**
+     * @Assert\NotBlank()
+     * @Groups({"user:write"})
+     * @ORM\ManyToOne(targetEntity=Poste::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $poste;
+
+    /**
+     * @Assert\NotBlank()
+     * @Groups({"user:write"})
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $service;
+
+    /**
+     * @Assert\NotBlank()
+     * @Groups({"user:write"})
+     * @ORM\ManyToMany(targetEntity=ProgrammeAvion::class, inversedBy="users")
+     */
+    private $programmeAvion;
+
     public function __construct()
     {
         $this->moldings = new ArrayCollection();
+        $this->programmeAvion = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -331,6 +361,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $molding->setCreatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPoste(): ?Poste
+    {
+        return $this->poste;
+    }
+
+    public function setPoste(?Poste $poste): self
+    {
+        $this->poste = $poste;
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProgrammeAvion[]
+     */
+    public function getProgrammeAvion(): Collection
+    {
+        return $this->programmeAvion;
+    }
+
+    public function addProgrammeAvion(ProgrammeAvion $programmeAvion): self
+    {
+        if (!$this->programmeAvion->contains($programmeAvion)) {
+            $this->programmeAvion[] = $programmeAvion;
+        }
+
+        return $this;
+    }
+
+    public function removeProgrammeAvion(ProgrammeAvion $programmeAvion): self
+    {
+        $this->programmeAvion->removeElement($programmeAvion);
 
         return $this;
     }

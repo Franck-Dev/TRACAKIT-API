@@ -39,17 +39,23 @@ security:
         ROLE_SUPERVISEUR: [ROLE_RESP_POLYM, ROLE_GESTIONAIRE]
         ROLE_CE_POLYM:    [ROLE_PLANIF, ROLE_REGLEUR]
         ROLE_CE_MOULAGE:  [ROLE_USER]
+        ROLE_CE_ASS:      [ROLE_USER]
         ROLE_RESP_POLYM:  [ROLE_CE_POLYM, ROLE_CE_MOULAGE]
+        ROLE_RESP_MOULAGE: [ROLE_CE_MOULAGE]
+        ROLE_RESP_ASS:    [ROLE_CE_ASS]
         ROLE_REGLEUR:     [ROLE_USER]
         ROLE_METHODES:    [ROLE_USER]
         ROLE_GESTIONAIRE: [ROLE_USER,ROLE_PLANIF]
+        ROLE_CONTROLEUR:  [ROLE_USER]
+        ROLE_CE_QUALITE:  [ROLE_CONTROLEUR]
+        ROLE_RESP_QUALITE: [ROLE_CE_QUALITE]
         
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        #- { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:

@@ -60,6 +60,7 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
         $pseudo=strtolower(substr($data->getPrenom(),0,1).".".$data->getNom());
         $data->setUsername($pseudo);
         $data->setMail($pseudo."@daher.com");
+        $data->setRoles($this->getChoiceRole($data));
 
         $this->_entityManager->persist($data);
         $this->_entityManager->flush();
@@ -69,5 +70,75 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
     {
         $this->_entityManager->remove($data);
         $this->_entityManager->flush();
+    }
+
+    private function getChoiceRole($data): Array
+    {
+        // Déclaration variable de retour
+        $roleUser=[];
+        // Récupération des choix de poste et de service
+        $poste=$data->getPoste()->getLibelle();
+        $service=$data->getService()->getNom();
+        // Suivant les choix, on va attribuer un profil à l'utilisateur
+        switch ($service) {
+            case "METHODES":
+                if($poste == "Programmeur"){
+                    $roleUser=['ROLE_METHODES','ROLE_PROGRAMMEUR'];
+                } elseif ($poste == "Support") {
+                    //dump($data->getPoste()->getLibelle());
+                    $roleUser=['ROLE_METHODES','ROLE_DATATOOLS'];
+                }else{
+                    $roleUser=['ROLE_METHODES'];
+                }
+                break;
+            case "MOYEN CHAUD":
+                if($poste == "Maitrise"){
+                    $roleUser=['ROLE_CE_POLYM'];
+                }else{
+                    $roleUser=['ROLE_REGLEUR'];
+                }
+                break;
+            case "MOULAGE":
+                if($poste == "Maitrise"){
+                    $roleUser=['ROLE_CE_MOULAGE'];
+                }elseif($data->getPoste()->getLibelle() == "Responsable"){
+                    $roleUser=['ROLE_RESP_MOULAGE'];
+                }  
+                else{
+                    $roleUser=['ROLE_USER'];
+                }
+                break;
+            case "ASSEMBLAGE":
+                if($poste == "Maitrise"){
+                    $roleUser=['ROLE_CE_ASS'];
+                }elseif($data->getPoste()->getLibelle() == "Responsable"){
+                    $roleUser=['ROLE_RESP_ASS'];
+                }  
+                else{
+                    $roleUser=['ROLE_USER'];
+                }
+                break;
+            case "QUALITE":
+                if($poste == "Maitrise"){
+                    $roleUser=['ROLE_CE_QUALITE'];
+                }elseif($data->getPoste()->getLibelle() == "Responsable"){
+                    $roleUser=['ROLE_RESP_QUALITE'];
+                }  
+                else{
+                    $roleUser=['ROLE_CONTROLEUR'];
+                }
+                break;
+            case "EXTERIEUR":
+                $roleUser=['ROLE_USER'];
+            break;
+            case "ORDO":
+                if($poste == "Responsable"){
+                    $roleUser=['ROLE_CE_QUALITE'];
+                }else{
+                    $roleUser=['ROLE_GESTIONAIRE'];
+                }
+            break;
+        }
+        return $roleUser;
     }
 }
