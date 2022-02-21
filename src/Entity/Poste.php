@@ -30,7 +30,7 @@ class Poste
     private $id;
 
     /**
-     * @Groups({"user:read","poste:write"})
+     * @Groups({"poste:read","poste:write"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
