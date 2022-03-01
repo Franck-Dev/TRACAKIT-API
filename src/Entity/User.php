@@ -109,11 +109,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({"user:read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Groups({"user:read"})
      */
     private $updatedAt;
 
