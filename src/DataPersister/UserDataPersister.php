@@ -105,7 +105,7 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
                     $roleUser=['ROLE_RESP_MOULAGE'];
                 }  
                 else{
-                    $roleUser=['ROLE_USER'];
+                    $roleUser=['ROLE_MOULEUR'];
                 }
                 break;
             case "ASSEMBLAGE":
@@ -115,7 +115,7 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
                     $roleUser=['ROLE_RESP_ASS'];
                 }  
                 else{
-                    $roleUser=['ROLE_USER'];
+                    $roleUser=['ROLE_AJUSTEUR'];
                 }
                 break;
             case "QUALITE":

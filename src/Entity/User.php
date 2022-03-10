@@ -154,7 +154,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\NotBlank()
-     * @Groups({"user:write"})
+     * @Groups({"user:read","user:write"})
      * @ORM\ManyToMany(targetEntity=ProgrammeAvion::class, inversedBy="users")
      */
     private $programmeAvion;
