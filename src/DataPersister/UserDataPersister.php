@@ -128,6 +128,26 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
                     $roleUser=['ROLE_CONTROLEUR'];
                 }
                 break;
+            case "LABO":
+                if($poste == "Maitrise"){
+                    $roleUser=['ROLE_CE_LABO'];
+                }elseif($data->getPoste()->getLibelle() == "Responsable"){
+                    $roleUser=['ROLE_RESP_LABO'];
+                }  
+                else{
+                    $roleUser=['ROLE_CONTROLEUR_LABO'];
+                }
+                break;
+            case "OUTILLAGE":
+                if($poste == "Maitrise"){
+                    $roleUser=['ROLE_CE_OUTIL'];
+                }elseif($data->getPoste()->getLibelle() == "Responsable"){
+                    $roleUser=['ROLE_RESP_OUTIL'];
+                }  
+                else{
+                    $roleUser=['ROLE_OUTILLEUR'];
+                }
+                break;
             case "EXTERIEUR":
                 $roleUser=['ROLE_USER'];
             break;

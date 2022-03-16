@@ -34,7 +34,7 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
     role_hierarchy:
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_RESP_OUTIL, ROLE_RESP_LABO, ROLE_RESP_ASS, ROLE_RESP_QUALITE]
         ROLE_ADMIN:       [ROLE_PROGRAMMEUR, ROLE_SUPERVISEUR]
         ROLE_PROGRAMMEUR: [ROLE_METHODES, ROLE_USER]
         ROLE_SUPERVISEUR: [ROLE_RESP_POLYM, ROLE_GESTIONAIRE]
@@ -52,6 +52,12 @@ security:
         ROLE_CONTROLEUR:  [ROLE_USER]
         ROLE_CE_QUALITE:  [ROLE_CONTROLEUR]
         ROLE_RESP_QUALITE: [ROLE_CE_QUALITE]
+        ROLE_CONTROLEUR_LABO:  [ROLE_USER]
+        ROLE_CE_LABO:  [ROLE_CONTROLEUR_LABO]
+        ROLE_RESP_LABO: [ROLE_CE_LABO]
+        ROLE_OUTILLEUR:  [ROLE_USER]
+        ROLE_CE_OUTIL:  [ROLE_OUTILLEUR]
+        ROLE_RESP_OUTIL: [ROLE_CE_OUTIL]
         
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
