@@ -8,6 +8,7 @@ use App\Entity\Molding;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use Doctrine\ORM\Mapping\Id;
 
 class MoldingDataPersister implements ContextAwareDataPersisterInterface
 {
@@ -44,10 +45,10 @@ class MoldingDataPersister implements ContextAwareDataPersisterInterface
         // Si création on renvoie les données de création, sinon celles de modification
         if (!$data->getcreatedAt()) {
             $data->setcreatedAt(new \DateTimeImmutable());
-            $data->setcreatedBy($this->_security->getUser());
+            $data->setcreatedBy('/api/users/'.$this->_security->getUser()->getId());
         } else {
             $data->setupdatedAt(new \DateTimeImmutable());
-            $data->setmodifiedBy($this->_security->getUser());
+            $data->setmodifiedBy('/api/users/'.$this->_security->getUser()->getId());
         }
         $this->_entityManager->persist($data);
         $this->_entityManager->flush();

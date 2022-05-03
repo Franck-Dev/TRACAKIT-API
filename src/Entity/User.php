@@ -23,18 +23,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * * @ApiResource(
  *      attributes={"pagination_enabled"=false},
  *      collectionOperations={
-*              "get","post",
-*              "login"={
-*                  "method"="POST",
-*                  "path"="/login",
-*                  "controller"="SecurityController::class",
-*                  "denormalization_context"={"groups"={"user:login"}}
-*              },
-*               "logout"={
-*                   "method"="GET",
-*                   "path"="/logout",
-*                   "controller"="SecurityController::class",
-*               }
+*              "get","post"={"security"="is_granted('ROLE_USER')"}
  *       },
  * itemOperations={
  *              "get",
@@ -75,7 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @Groups({"user:write","user:login"})
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
@@ -131,43 +120,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $lastCon;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Molding::class, mappedBy="createdBy")
-     */
-    private $moldings;
-
-    /**
-     * @Assert\NotBlank()
-     * @Groups({"user:write"})
-     * @ORM\ManyToOne(targetEntity=Poste::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $poste;
-
-    /**
-     * @Assert\NotBlank()
-     * @Groups({"user:write"})
-     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $service;
-
-    /**
-     * @Assert\NotBlank()
-     * @Groups({"user:read","user:write"})
-     * @ORM\ManyToMany(targetEntity=ProgrammeAvion::class, inversedBy="users")
-     */
-    private $programmeAvion;
-
-    public function __construct()
-    {
-        $this->moldings = new ArrayCollection();
-        $this->programmeAvion = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -341,84 +303,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastCon(?\DateTimeImmutable $lastCon): self
     {
         $this->lastCon = $lastCon;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Molding[]
-     */
-    public function getMoldings(): Collection
-    {
-        return $this->moldings;
-    }
-
-    public function addMolding(Molding $molding): self
-    {
-        if (!$this->moldings->contains($molding)) {
-            $this->moldings[] = $molding;
-            $molding->setCreatedBy($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMolding(Molding $molding): self
-    {
-        if ($this->moldings->removeElement($molding)) {
-            // set the owning side to null (unless already changed)
-            if ($molding->getCreatedBy() === $this) {
-                $molding->setCreatedBy(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getPoste(): ?Poste
-    {
-        return $this->poste;
-    }
-
-    public function setPoste(?Poste $poste): self
-    {
-        $this->poste = $poste;
-
-        return $this;
-    }
-
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
-
-    public function setService(?Service $service): self
-    {
-        $this->service = $service;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ProgrammeAvion[]
-     */
-    public function getProgrammeAvion(): Collection
-    {
-        return $this->programmeAvion;
-    }
-
-    public function addProgrammeAvion(ProgrammeAvion $programmeAvion): self
-    {
-        if (!$this->programmeAvion->contains($programmeAvion)) {
-            $this->programmeAvion[] = $programmeAvion;
-        }
-
-        return $this;
-    }
-
-    public function removeProgrammeAvion(ProgrammeAvion $programmeAvion): self
-    {
-        $this->programmeAvion->removeElement($programmeAvion);
 
         return $this;
     }

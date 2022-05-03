@@ -95,13 +95,13 @@ class Molding
 
     /**
      * @Groups({"layer:read"})
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="moldings")
+     * @ORM\Column(type="string", length=255)
      */
     private $createdBy;
 
     /**
      * @Groups({"layer:read"})
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="moldings")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $modifiedBy;
 
@@ -234,25 +234,26 @@ class Molding
 
         return $this;
     }
+    
 
-    public function getCreatedBy(): ?user
+    public function getCreatedBy(): ?string
     {
         return $this->createdBy;
     }
 
-    public function setCreatedBy(?user $createdBy): self
+    public function setCreatedBy(?string $createdBy): self
     {
         $this->createdBy = $createdBy;
 
         return $this;
     }
 
-    public function getModifiedBy(): ?User
+    public function getModifiedBy(): ?string
     {
         return $this->modifiedBy;
     }
 
-    public function setModifiedBy(?User $modifiedBy): self
+    public function setModifiedBy(?string $modifiedBy): self
     {
         $this->modifiedBy = $modifiedBy;
 

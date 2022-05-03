@@ -10,59 +10,63 @@ security:
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: matricule
+             entity:
+                 class: App\Entity\User
+        #         property: matricule
+        users_in_memory: { memory: ~ }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            lazy: true
-            provider: app_user_provider
+            custom_authenticators:
+                - App\Security\ApiKeyAuthenticator
+            #lazy: true
+            #provider:   users_in_memory
+            #provider: app_user_provider
 
-            json_login:
-                check_path: api_login
-                username_path: matricule
-                password_path: password
-            logout:
-                path: api_logout
-                target: /api
+            # json_login:
+            #     check_path: api_login
+            #     username_path: matricule
+            #     password_path: password
+            # logout:
+            #     path: api_logout
+            #     target: /api
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-    role_hierarchy:
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_RESP_OUTIL, ROLE_RESP_LABO, ROLE_RESP_ASS, ROLE_RESP_QUALITE]
-        ROLE_ADMIN:       [ROLE_PROGRAMMEUR, ROLE_SUPERVISEUR]
-        ROLE_PROGRAMMEUR: [ROLE_METHODES, ROLE_USER]
-        ROLE_SUPERVISEUR: [ROLE_RESP_POLYM, ROLE_GESTIONAIRE]
-        ROLE_CE_POLYM:    [ROLE_PLANIF, ROLE_REGLEUR]
-        ROLE_CE_MOULAGE:  [ROLE_MOULEUR]
-        ROLE_CE_ASS:      [ROLE_AJUSTEUR]
-        ROLE_RESP_POLYM:  [ROLE_CE_POLYM, ROLE_CE_MOULAGE]
-        ROLE_RESP_MOULAGE: [ROLE_CE_MOULAGE]
-        ROLE_RESP_ASS:    [ROLE_CE_ASS]
-        ROLE_MOULEUR:     [ROLE_USER]
-        ROLE_AJUSTEUR:    [ROLE_USER]
-        ROLE_REGLEUR:     [ROLE_USER]
-        ROLE_METHODES:    [ROLE_USER]
-        ROLE_GESTIONAIRE: [ROLE_USER,ROLE_PLANIF]
-        ROLE_CONTROLEUR:  [ROLE_USER]
-        ROLE_CE_QUALITE:  [ROLE_CONTROLEUR]
-        ROLE_RESP_QUALITE: [ROLE_CE_QUALITE]
-        ROLE_CONTROLEUR_LABO:  [ROLE_USER]
-        ROLE_CE_LABO:  [ROLE_CONTROLEUR_LABO]
-        ROLE_RESP_LABO: [ROLE_CE_LABO]
-        ROLE_OUTILLEUR:  [ROLE_USER]
-        ROLE_CE_OUTIL:  [ROLE_OUTILLEUR]
-        ROLE_RESP_OUTIL: [ROLE_CE_OUTIL]
+    #role_hierarchy:
+        # ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_RESP_OUTIL, ROLE_RESP_LABO, ROLE_RESP_ASS, ROLE_RESP_QUALITE]
+        # ROLE_ADMIN:       [ROLE_PROGRAMMEUR, ROLE_SUPERVISEUR]
+        # ROLE_PROGRAMMEUR: [ROLE_METHODES, ROLE_USER]
+        # ROLE_SUPERVISEUR: [ROLE_RESP_POLYM, ROLE_GESTIONAIRE]
+        # ROLE_CE_POLYM:    [ROLE_PLANIF, ROLE_REGLEUR]
+        # ROLE_CE_MOULAGE:  [ROLE_MOULEUR]
+        # ROLE_CE_ASS:      [ROLE_AJUSTEUR]
+        # ROLE_RESP_POLYM:  [ROLE_CE_POLYM, ROLE_CE_MOULAGE]
+        # ROLE_RESP_MOULAGE: [ROLE_CE_MOULAGE]
+        # ROLE_RESP_ASS:    [ROLE_CE_ASS]
+        # ROLE_MOULEUR:     [ROLE_USER]
+        # ROLE_AJUSTEUR:    [ROLE_USER]
+        # ROLE_REGLEUR:     [ROLE_USER]
+        # ROLE_METHODES:    [ROLE_USER]
+        # ROLE_GESTIONAIRE: [ROLE_USER,ROLE_PLANIF]
+        # ROLE_CONTROLEUR:  [ROLE_USER]
+        # ROLE_CE_QUALITE:  [ROLE_CONTROLEUR]
+        # ROLE_RESP_QUALITE: [ROLE_CE_QUALITE]
+        # ROLE_CONTROLEUR_LABO:  [ROLE_USER]
+        # ROLE_CE_LABO:  [ROLE_CONTROLEUR_LABO]
+        # ROLE_RESP_LABO: [ROLE_CE_LABO]
+        # ROLE_OUTILLEUR:  [ROLE_USER]
+        # ROLE_CE_OUTIL:  [ROLE_OUTILLEUR]
+        # ROLE_RESP_OUTIL: [ROLE_CE_OUTIL]
         
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/admin, roles: ROLE_ADMIN }
         #- { path: ^/profile, roles: ROLE_USER }
 
