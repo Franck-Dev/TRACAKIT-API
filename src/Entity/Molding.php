@@ -18,7 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "get",
  *              "post"={"security"="is_granted('ROLE_USER')"}
  *      },
- *      itemOperations={"get","put","patch","delete"},
+ *      itemOperations={"get","put"={"security"="is_granted('ROLE_USER')"},
+ *                      "patch"={"security"="is_granted('ROLE_USER')"},
+ *                      "delete"={"security"="is_granted('ROLE_USER')"}},
  *      order={"id" ="DESC"}
  * )
  * @ORM\Entity(repositoryClass=MoldingRepository::class)

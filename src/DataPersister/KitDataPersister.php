@@ -33,6 +33,7 @@ class KitDataPersister implements ContextAwareDataPersisterInterface
 
     public function persist($data, array $context = [])
     {
+        dd($data);
         // Si création on renvoie la date de création, sinon la date d emodification
         if (!$data->getCreatedAt()) {
             $data->setUpdateAt(new \DateTimeImmutable());
