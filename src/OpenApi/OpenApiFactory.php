@@ -21,13 +21,13 @@ class OpenApiFactory implements OpenApiFactoryInterface
     public function __invoke(array $context = []): OpenApi{
 
         $openApi=$this->decorated->__invoke($context);
-        $schemas=$openApi->getComponents()->getSecuritySchemes();
-        $schemas['cookieAuth'] = new \ArrayObject([
+/*         $schemas=$openApi->getComponents()->getSecuritySchemes();
+        $schemas['ApiKeyAuth'] = new \ArrayObject([
             'type' => 'apiKey',
-            'in' => 'cookie',
-            'name' => 'PHPESSID'
+            'in' => 'header',
+            'name' => 'X-AUTH-TOKEN'
         ]);
-        $openApi=$openApi->withSecurity(['cookieAuth' => []]);
+        $openApi=$openApi->withSecurity(['ApiKeyAuth' => []]); */
         //dd($openApi);
         return $openApi;
     }

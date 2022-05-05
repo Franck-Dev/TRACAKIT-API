@@ -13,7 +13,7 @@ security:
              entity:
                  class: App\Entity\User
         #         property: matricule
-        users_in_memory: { memory: ~ }
+        #users_in_memory: { memory: ~ }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

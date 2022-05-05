@@ -20,23 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
- * * @ApiResource(
- *      attributes={"pagination_enabled"=false},
- *      collectionOperations={
-*              "get","post"={"security"="is_granted('ROLE_USER')"}
- *       },
- * itemOperations={
- *              "get",
- *              "put"={"security"="is_granted('ROLE_ADMIN')"},
- *              "patch"={"security"="is_granted('ROLE_USER')"},
- *              "delete"={"security"="is_granted('ROLE_ADMIN')"},
- * },
- *     normalizationContext={"groups"={"user:read"}},
- *     denormalizationContext={"groups"={"user:write"}},
- * )
- * @UniqueEntity(fields={"username"})
- * @UniqueEntity(fields={"matricule"})
- * @UniqueEntity(fields={"mail"})
+ *
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -64,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @Groups({"user:write","user:login"})
      * @var string The hashed password
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string")
      */
     private $password;
 
@@ -179,12 +163,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
