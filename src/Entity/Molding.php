@@ -91,7 +91,7 @@ class Molding
     /**
      * @Assert\NotBlank()
      * @Groups({"layer:read", "layer:write", "OT:read"})
-     * @ORM\ManyToOne(targetEntity=MoldingTool::class, inversedBy="moldings")
+     * @ORM\Column(type="string", length=255)
      */
     private $outillage;
 
@@ -225,12 +225,12 @@ class Molding
         return $this;
     }
 
-    public function getOutillage(): ?MoldingTool
+    public function getOutillage(): ?string
     {
         return $this->outillage;
     }
 
-    public function setOutillage(?MoldingTool $outillage): self
+    public function setOutillage(?string $outillage): self
     {
         $this->outillage = $outillage;
 
