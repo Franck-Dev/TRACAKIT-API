@@ -50,7 +50,6 @@ class CallApiService
         } else {
             //$path='http://localhost:83';
         }
-        dump($url);
         $response = $this->client->request(
             'GET',
             //$path.$url

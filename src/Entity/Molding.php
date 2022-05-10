@@ -294,9 +294,9 @@ class Molding
         return $this->userCreat;
     }
 
-    public function setUserCreat(?array $UserCreat): self
+    public function setUserCreat(?array $userCreat): self
     {
-        $this->UserCreat = $UserCreat;
+        $this->userCreat = $userCreat;
 
         return $this;
     }
@@ -306,9 +306,9 @@ class Molding
         return $this->userModif;
     }
 
-    public function setUserModif(?array $UserModif): self
+    public function setUserModif(?array $userModif): self
     {
-        $this->UserModif = $UserModif;
+        $this->userModif = $userModif;
 
         return $this;
     }
