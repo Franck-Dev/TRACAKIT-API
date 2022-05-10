@@ -18,7 +18,7 @@ class CallApiService
         //dd($this->client);
         $response = $this->client->request(
             'GET',
-            'http://localhost:8000/api/users'
+            'http://localhost:84/api/users'
         );
         if ($apiToken){
             foreach ($response->toArray() as $user) {
@@ -28,6 +28,34 @@ class CallApiService
                 }
             }
         }
+        return $response->toArray();
+    }
+
+     /**
+     * Fonction permettant de remonter les données des API exter suivant une url
+     *
+     * @param  string $url
+     * @return array
+     */
+    public function getDatas($url=null, bool $pathAPIExter): array
+    {
+        //Gestion de la construction de la requete API svt envirronements
+        if ($pathAPIExter == false)
+        {
+            //$path=$_ENV['APP_SERVER'];
+        } elseif ($_ENV['APP_ENV'] == 'dev')
+        {
+            //$path=$_SERVER['SYMFONY_PROJECT_DEFAULT_ROUTE_URL'];
+            //$path='http://127.0.0.1:8000/';
+        } else {
+            //$path='http://localhost:83';
+        }
+        dump($url);
+        $response = $this->client->request(
+            'GET',
+            //$path.$url
+            $url
+        );
         return $response->toArray();
     }
 }

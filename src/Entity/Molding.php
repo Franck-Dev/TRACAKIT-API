@@ -107,6 +107,21 @@ class Molding
      */
     private $modifiedBy;
 
+    /**
+     * @Groups({"layer:read"})
+     * */
+    private $OT;
+
+    /**
+     * @Groups({"layer:read"})
+     * */
+    private $userCreat;
+
+    /**
+     * @Groups({"layer:read"})
+     * */
+    private $userModif;
+
     public function __construct()
     {
         $this->kits = new ArrayCollection();
@@ -258,6 +273,42 @@ class Molding
     public function setModifiedBy(?string $modifiedBy): self
     {
         $this->modifiedBy = $modifiedBy;
+
+        return $this;
+    }
+
+    public function getOT(): ?array
+    {
+        return $this->OT;
+    }
+
+    public function setOT(?array $OT): self
+    {
+        $this->OT = $OT;
+
+        return $this;
+    }
+
+    public function getUserCreat(): ?array
+    {
+        return $this->userCreat;
+    }
+
+    public function setUserCreat(?array $UserCreat): self
+    {
+        $this->UserCreat = $UserCreat;
+
+        return $this;
+    }
+
+    public function getUserModif(): ?array
+    {
+        return $this->userModif;
+    }
+
+    public function setUserModif(?array $UserModif): self
+    {
+        $this->UserModif = $UserModif;
 
         return $this;
     }
