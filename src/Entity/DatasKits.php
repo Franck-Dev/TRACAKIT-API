@@ -2,28 +2,38 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DatasKitsRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
- *  collectionOperations={"get","post"},
- *  itemOperations={"get","put","delete"},
+ *  collectionOperations={"get","post"={"security"="is_granted('ROLE_GESTION_EQ')"}},
+ *  itemOperations={"get","delete"={"security"="is_granted('ROLE_ADMIN')"}},
  *  normalizationContext={"groups"={"kit:read", "kit:edit"}},
  *  denormalizationContext={"groups"={"kit:write"}},
- *  order={"id" ="DESC"}
+ *  order={"id" ="DESC"},
+ *  attributes={"pagination_items_per_page" = 25}
  * )
  * @ApiFilter(
  *  SearchFilter::class,
- *      properties={"idMM" : "exact","status" : "exact"}
+ *      properties={"idMM" : "exact"})
+ * @ApiFilter(
+ *  BooleanFilter::class, 
+ *      properties={"status"}
+ * )
+ * @ApiFilter(
+ *  DateFilter::class, 
+ *      properties={"createdAt"}
  * )
  * @ORM\Entity(repositoryClass=DatasKitsRepository::class)
  * @UniqueEntity("idMM")
