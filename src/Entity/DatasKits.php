@@ -18,7 +18,18 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ApiResource(
  *  collectionOperations={"get","post"={"security"="is_granted('ROLE_GESTION_EQ')"}},
- *  itemOperations={"get","delete"={"security"="is_granted('ROLE_ADMIN')"}},
+ *  itemOperations={"get","delete"={"security"="is_granted('ROLE_ADMIN')"},
+ *                  "patch"={
+ *                   "security"="is_granted('ROLE_USER')",
+*                    "method"="PATCH",
+*                    "path"="/datas_kits/{id}/used",
+*                    "controller"= KitsController::class,
+*                    "openapi_context"={
+*                       "summary"="Allows you to change the status of a polymerized kit"    
+*                    },
+*                   "denormalization_context"={"groups"={"kit:used"}}
+*                   }
+ * },
  *  normalizationContext={"groups"={"kit:read", "kit:edit"}},
  *  denormalizationContext={"groups"={"kit:write"}},
  *  order={"id" ="DESC"},
@@ -122,7 +133,7 @@ class DatasKits
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"kit:read","kit:write"})
+     * @Groups({"kit:read","kit:write","kit:used"})
      */
     private $status;
 
