@@ -1,7 +1,7 @@
 api_platform:
     title: 'API Gestion des Kits'
     description: 'Stockage et traçabilité des péremptions des kits'
-    version: '2.3.0'
+    version: '2.3.1'
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     patch_formats:
