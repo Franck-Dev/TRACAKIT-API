@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MoldingRepository;
+use App\Controller\MoldingsController;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -15,15 +16,26 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *      normalizationContext={"groups"={"layer:read", "OT:read", "kit:read"}},
- *      denormalizationContext={"groups"={"layer:write"}},
  *      collectionOperations={
  *              "get",
  *              "post"={"security"="is_granted('ROLE_USER')"}
  *      },
  *      itemOperations={"get","put"={"security"="is_granted('ROLE_CONTROLEUR')"},
  *                      "patch"={"security"="is_granted('ROLE_USER')"},
- *                      "delete"={"security"="is_granted('ROLE_GESTION_EQ')"}},
+ *                      "delete"={"security"="is_granted('ROLE_GESTION_EQ')"},
+ *                      "used"={
+ *                          "security"="is_granted('ROLE_USER')",
+*                           "method"="PATCH",
+*                           "path"="/moldings/{id}/used",
+*                           "controller"= MoldingsController::class,
+*                           "openapi_context"={
+*                               "summary"="Allows you to change the status of a polymerized moldings"    
+*                           },
+*                           "denormalization_context"={"groups"={"molding:used"}}
+*                   }
+ *      },
+ *      normalizationContext={"groups"={"layer:read", "OT:read", "kit:read"}},
+ *      denormalizationContext={"groups"={"layer:write"}},
  *      order={"id" ="DESC"},
  *      attributes={"pagination_items_per_page" = 25}
  * )
@@ -132,6 +144,12 @@ class Molding
      * @Groups({"layer:read"})
      * */
     private $userModif;
+
+    /**
+     * @Groups({"layer:read"})
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
 
     public function __construct()
     {
@@ -320,6 +338,18 @@ class Molding
     public function setUserModif(?array $userModif): self
     {
         $this->userModif = $userModif;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

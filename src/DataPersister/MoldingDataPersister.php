@@ -46,6 +46,7 @@ class MoldingDataPersister implements ContextAwareDataPersisterInterface
         if (!$data->getcreatedAt()) {
             $data->setcreatedAt(new \DateTimeImmutable());
             $data->setcreatedBy('/api/users/'.$this->_security->getUser()->getId());
+            $data->setIsActive(true);
         } else {
             $data->setupdatedAt(new \DateTimeImmutable());
             $data->setmodifiedBy('/api/users/'.$this->_security->getUser()->getId());

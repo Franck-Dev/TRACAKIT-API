@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CallApiService
@@ -12,21 +14,34 @@ class CallApiService
     {
         $this->client = $client;
     }
-
+    
+    /**
+     * getDatasUsers :  Donne le user connecté ou appelé
+     *
+     * @param  string $apiToken
+     * @return array
+     */
     public function getDatasUsers($apiToken=null): array
     {
         //dd($this->client);
         $response = $this->client->request(
             'GET',
-            'http://localhost:84/api/users'
+            'http://localhost:84/api/users?page=1&itemsPerPage=1&pagination=true&apiToken='.$apiToken
         );
-        if ($apiToken){
-            foreach ($response->toArray() as $user) {
-                if ($user['apiToken'] == $apiToken)
-                {
-                    return $user;
-                }
+        $user=$response->toArray();
+        if ($user){
+            if ($user[0]['isActive'] == true)
+            {
+                return $user;
+            } else {
+                $data=['message' => 'Utilisateur désactivé'];
+                
+                return new JsonResponse($data, Response::HTTP_LOCKED);
             }
+        } else {
+            $data=['message' => 'Utilisateur pas trouvé'];
+                
+            return new JsonResponse($data, Response::HTTP_NOT_FOUND);
         }
         return $response->toArray();
     }

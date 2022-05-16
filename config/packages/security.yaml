@@ -21,9 +21,9 @@ security:
         main:
             custom_authenticators:
                 - App\Security\ApiKeyAuthenticator
-            #lazy: true
+            lazy: true
             #provider:   users_in_memory
-            #provider: app_user_provider
+            provider: app_user_provider
 
             # json_login:
             #     check_path: api_login
