@@ -32,7 +32,7 @@ class CallApiService
         if ($user){
             if ($user[0]['isActive'] == true)
             {
-                return $user;
+                return $user[0];
             } else {
                 $data=['message' => 'Utilisateur désactivé'];
                 
