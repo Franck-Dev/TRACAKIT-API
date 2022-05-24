@@ -9,6 +9,7 @@ use App\Service\CallApiService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\LockedException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -48,15 +49,24 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
 
         return new SelfValidatingPassport(new UserBadge($apiToken,function($apiToken){
             $userToken=$this->CallApi->getDatasUsers($apiToken);
-            if (!$userToken) {
-                throw new UserNotFoundException();
+            //Gestion des erreurs d'authentification
+            if ($userToken instanceof JsonResponse) {
+                switch ($userToken->getStatusCode()) {
+                    case 423:
+                        throw new LockedException();
+                        break;
+                    case 404:
+                        throw new UserNotFoundException();
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
             }
             $user=new User($userToken);
             //Hydratation du User
             foreach ($userToken as $key => $value) {
-                // On récupère le nom des setters correspondants
-                // si la clef est placesTotales son setter est setPlacesTotales
-                // il suffit de mettre la 1ere lettre de key en Maj et de le préfixer par set
+                // On créé le nom des setters correspondants
                 $method = 'set'.ucfirst($key);
                 // On vérifie que le setter correspondant existe
                 if (method_exists($user, $method)) {

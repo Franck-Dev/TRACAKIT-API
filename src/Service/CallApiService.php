@@ -19,9 +19,9 @@ class CallApiService
      * getDatasUsers :  Donne le user connecté ou appelé
      *
      * @param  string $apiToken
-     * @return array
+     * @return mixed
      */
-    public function getDatasUsers($apiToken=null): array
+    public function getDatasUsers($apiToken=null)
     {
         //dd($this->client);
         $response = $this->client->request(
