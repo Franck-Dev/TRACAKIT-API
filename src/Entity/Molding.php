@@ -151,9 +151,16 @@ class Molding
      */
     private $isActive;
 
+    /**
+     * @Groups({"layer:read", "layer:write"})
+     * @ORM\OneToMany(targetEntity=AdditionalMaterial::class, mappedBy="molding")
+     */
+    private $materialSupplementary;
+
     public function __construct()
     {
         $this->kits = new ArrayCollection();
+        $this->materialSupplementary = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -350,6 +357,36 @@ class Molding
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AdditionalMaterial[]
+     */
+    public function getMaterialSupplementary(): Collection
+    {
+        return $this->materialSupplementary;
+    }
+
+    public function addMaterialSupplementary(AdditionalMaterial $materialSupplementary): self
+    {
+        if (!$this->materialSupplementary->contains($materialSupplementary)) {
+            $this->materialSupplementary[] = $materialSupplementary;
+            $materialSupplementary->setMolding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMaterialSupplementary(AdditionalMaterial $materialSupplementary): self
+    {
+        if ($this->materialSupplementary->removeElement($materialSupplementary)) {
+            // set the owning side to null (unless already changed)
+            if ($materialSupplementary->getMolding() === $this) {
+                $materialSupplementary->setMolding(null);
+            }
+        }
 
         return $this;
     }
