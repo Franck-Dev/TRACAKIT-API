@@ -22,7 +22,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      },
  *      itemOperations={"get","put"={"security"="is_granted('ROLE_CONTROLEUR')"},
  *                      "patch"={"security"="is_granted('ROLE_USER')"},
- *                      "delete"={"security"="is_granted('ROLE_GESTION_EQ')"},
+ *                      "delete"={"security"="is_granted('ROLE_ADMIN')"},
  *                      "used"={
  *                          "security"="is_granted('ROLE_USER')",
 *                           "method"="PATCH",
@@ -156,6 +156,12 @@ class Molding
      * @ORM\OneToMany(targetEntity=AdditionalMaterial::class, mappedBy="molding")
      */
     private $materialSupplementary;
+
+    /**
+     * @Groups({"layer:read", "molding:used"})
+     * @ORM\Column(type="string", length=14, nullable=true)
+     */
+    private $polymerisation;
 
     public function __construct()
     {
@@ -387,6 +393,18 @@ class Molding
                 $materialSupplementary->setMolding(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPolymerisation(): ?string
+    {
+        return $this->polymerisation;
+    }
+
+    public function setPolymerisation(?string $polymerisation): self
+    {
+        $this->polymerisation = $polymerisation;
 
         return $this;
     }
