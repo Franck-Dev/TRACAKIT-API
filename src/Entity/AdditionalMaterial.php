@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *      normalizationContext={"groups"={"core:read"}},
+ *      normalizationContext={"groups"={"core:read","type:read"}},
  *      denormalizationContext={"groups"={"core:write"}},
  * )
  * @ORM\Entity(repositoryClass=AdditionalMaterialRepository::class)
@@ -48,16 +48,16 @@ class AdditionalMaterial
     private $molding;
 
     /**
-     * @Groups({"core:read","core:write"})
-     * @ORM\Column(type="string", length=255)
-     */
-    private $avion;
-
-    /**
-     * @Groups({"core:read","core:write"})
+     * @Groups({"core:read","core:write","type:read"})
      * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="additionalMaterials")
      */
     private $typeMaterial;
+
+    /**
+     * @Groups({"core:read","core:write"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $outillageMoulage;
 
     public function getId(): ?int
     {
@@ -112,18 +112,6 @@ class AdditionalMaterial
         return $this;
     }
 
-    public function getAvion(): ?string
-    {
-        return $this->avion;
-    }
-
-    public function setAvion(string $avion): self
-    {
-        $this->avion = $avion;
-
-        return $this;
-    }
-
     public function getTypeMaterial(): ?Type
     {
         return $this->typeMaterial;
@@ -132,6 +120,18 @@ class AdditionalMaterial
     public function setTypeMaterial(?Type $typeMaterial): self
     {
         $this->typeMaterial = $typeMaterial;
+
+        return $this;
+    }
+
+    public function getOutillageMoulage(): ?string
+    {
+        return $this->outillageMoulage;
+    }
+
+    public function setOutillageMoulage(?string $outillageMoulage): self
+    {
+        $this->outillageMoulage = $outillageMoulage;
 
         return $this;
     }

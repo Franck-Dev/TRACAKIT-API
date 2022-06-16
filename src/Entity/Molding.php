@@ -34,7 +34,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 *                           "denormalization_context"={"groups"={"molding:used"}}
 *                   }
  *      },
- *      normalizationContext={"groups"={"layer:read", "OT:read", "kit:read"}},
+ *      normalizationContext={"groups"={"layer:read", "OT:read", "kit:read","core:read"}},
  *      denormalizationContext={"groups"={"layer:write"}},
  *      order={"id" ="DESC"},
  *      attributes={"pagination_items_per_page" = 25}
@@ -152,7 +152,7 @@ class Molding
     private $isActive;
 
     /**
-     * @Groups({"layer:read", "layer:write"})
+     * @Groups({"layer:read", "layer:write","core:read"})
      * @ORM\OneToMany(targetEntity=AdditionalMaterial::class, mappedBy="molding")
      */
     private $materialSupplementary;
