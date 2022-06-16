@@ -40,18 +40,24 @@ class AdditionalMaterial
      * @Groups({"core:read","core:write"})
      * @ORM\Column(type="string", length=255)
      */
-    private $type;
-
-    /**
-     * @Groups({"core:read"})
-     * @ORM\Column(type="string", length=255)
-     */
     private $numLot;
 
     /**
      * @ORM\ManyToOne(targetEntity=Molding::class, inversedBy="materialSupplementary")
      */
     private $molding;
+
+    /**
+     * @Groups({"core:read","core:write"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $avion;
+
+    /**
+     * @Groups({"core:read","core:write"})
+     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="additionalMaterials")
+     */
+    private $typeMaterial;
 
     public function getId(): ?int
     {
@@ -82,18 +88,6 @@ class AdditionalMaterial
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function getNumLot(): ?string
     {
         return $this->numLot;
@@ -114,6 +108,30 @@ class AdditionalMaterial
     public function setMolding(?Molding $molding): self
     {
         $this->molding = $molding;
+
+        return $this;
+    }
+
+    public function getAvion(): ?string
+    {
+        return $this->avion;
+    }
+
+    public function setAvion(string $avion): self
+    {
+        $this->avion = $avion;
+
+        return $this;
+    }
+
+    public function getTypeMaterial(): ?Type
+    {
+        return $this->typeMaterial;
+    }
+
+    public function setTypeMaterial(?Type $typeMaterial): self
+    {
+        $this->typeMaterial = $typeMaterial;
 
         return $this;
     }
