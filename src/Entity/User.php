@@ -2,9 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Poste;
-use App\Entity\Service;
-use App\Entity\ProgrammeAvion;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\Controller\SecurityController;
