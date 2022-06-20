@@ -22,29 +22,39 @@ class AdditionalMaterialRepository extends ServiceEntityRepository
     // /**
     //  * @return AdditionalMaterial[] Returns an array of AdditionalMaterial objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findByOutillage($nOT, $type)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('a.ref','a.designation')
+            ->join('a.typeMaterial', 'p')
+            ->andWhere('a.outillageMoulage = :val')
+            ->andWhere('p.designation = :type')
+            ->setParameter('val', $nOT)
+            ->setParameter('type', $type)
+            ->orderBy('a.ref', 'ASC')
+            ->groupBy('a.ref')
+            //->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?AdditionalMaterial
+    
+    // /**
+    //  * @return AdditionalMaterial[] Returns an array of differents TypeMaterial
+    //  */
+    public function findByType($nOT)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
+            ->select('p.designation')->distinct(true)
+            ->join('a.typeMaterial', 'p')
+            ->andWhere('a.outillageMoulage = :val')
+            ->setParameter('val', $nOT)
+            //->groupBy('a.typeMaterial')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
+            //->getOneOrNullResult()
         ;
     }
-    */
+    
 }

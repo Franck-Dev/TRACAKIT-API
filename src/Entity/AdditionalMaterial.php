@@ -3,15 +3,20 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AdditionalMaterialRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
  *      normalizationContext={"groups"={"core:read","type:read"}},
  *      denormalizationContext={"groups"={"core:write"}},
  * )
+ * @ApiFilter(
+ *  SearchFilter::class,
+ *      properties={"id" : "exact","typeMaterial" : "exact","outillageMoulage" : "exact"})
  * @ORM\Entity(repositoryClass=AdditionalMaterialRepository::class)
  */
 class AdditionalMaterial
